@@ -13,4 +13,16 @@
    eJxjYBgFo4B4wA/EAlSkBzsAAPeoATc=
   </data>
  </layer>
+ <objectgroup name="coin" width="20" height="10">
+  <object x="352" y="107"/>
+  <object x="352" y="143"/>
+  <object x="352" y="184"/>
+  <object x="352" y="225"/>
+  <object x="303" y="107"/>
+  <object x="302" y="226"/>
+  <object x="404" y="226"/>
+ </objectgroup>
+ <objectgroup name="rock" width="20" height="10">
+  <object x="516" y="230"/>
+ </objectgroup>
 </map>

@@ -21,5 +21,14 @@ var StatusLayer = cc.Layer.extend({
     this.labelMeter = new cc.LabelTTF("0M", "Helvetica", 20);
     this.labelMeter.setPosition(cc.p(winSize.width - 70, winSize.height - 20));
     this.addChild(this.labelMeter);
+  },
+
+  addCoin: function(num) {
+    this.coins += num;
+    this.labelCoin.setString('Coins:' + this.coins);
+  },
+
+  updateMeter: function(px) {
+    this.labelMeter.setString(parseInt(px / 10) + 'M');
   }
 });

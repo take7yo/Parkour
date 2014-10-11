@@ -3,15 +3,23 @@ var BackgroundLayer = cc.Layer.extend({
   map01: null,
   mapWidth: 0,
   mapIndex: 0,
+  space: null,
+  spriteSheet: null,
+  objects: [],
 
-  ctor: function() {
+  ctor: function(space) {
     this._super();
+
+    // clean old array here
+    this.objects = [];
+    this.space = space;
+
     this.init();
   },
 
   init: function() {
     this._super();
-    var winSize = cc.director.getWinSize();
+    // var winSize = cc.director.getWinSize();
 
     // create the background image and position it at the center of screen
     // var centerPos = cc.p(winSize.width / 2, winSize.height / 2);
@@ -28,7 +36,65 @@ var BackgroundLayer = cc.Layer.extend({
     this.map01.setPosition(cc.p(this.mapWidth, 0));
     this.addChild(this.map01);
 
+    // create sprite sheet
+    cc.spriteFrameCache.addSpriteFrames(res.background_plist);
+    this.spriteSheet = new cc.SpriteBatchNode(res.background_png);
+    this.addChild(this.spriteSheet);
+
+    this.loadObjects(this.map00, 0);
+    this.loadObjects(this.map01, 1);
+
     this.scheduleUpdate();
+  },
+
+  loadObjects: function(map, mapIndex) {
+    // add coin
+    var coinGroup = map.getObjectGroup("coin");
+    var coinArray = coinGroup.getObjects();
+    for (var i = 0; i < coinArray.length; i++) {
+      var coin = new Coin(
+        this.spriteSheet,
+        this.space,
+        cc.p(coinArray[i]["x"] + this.mapWidth * mapIndex, coinArray[i]["y"])
+      );
+      coin.mapIndex = mapIndex;
+      this.objects.push(coin);
+    }
+    // add rock
+    var rockGroup = map.getObjectGroup("rock");
+    var rockArray = rockGroup.getObjects();
+    for (var i = 0; i < rockArray.length; i++) {
+      var rock = new Rock(
+        this.spriteSheet,
+        this.space,
+        rockArray[i]["x"] + this.mapWidth * mapIndex
+      );
+      rock.mapIndex = mapIndex;
+      this.objects.push(rock);
+    }
+  },
+
+  removeObjects: function(mapIndex) {
+    while ((function(obj, index) {
+      for (var i = 0; i < obj.length; i++) {
+        if (obj[i].mapIndex == index) {
+          obj[i].removeFromParent();
+          obj.splice(i, 1);
+          return true;
+        }
+      }
+      return false;
+    })(this.objects, mapIndex));
+  },
+
+  removeObjectByShape: function(shape) {
+    for (var i = 0; i < this.objects.length; i++) {
+      if (this.objects[i].getShape() == shape) {
+        this.objects[i].removeFromParent();
+        this.objects.splice(i, 1);
+        break;
+      }
+    }
   },
 
   checkAndReload: function(eyeX) {
@@ -40,16 +106,19 @@ var BackgroundLayer = cc.Layer.extend({
     if (0 == newMapIndex % 2) {
       // change mapSecond
       this.map01.setPositionX(this.mapWidth * (newMapIndex + 1));
+      this.loadObjects(this.map01, newMapIndex + 1);
     } else {
       // change mapFirst
       this.map00.setPositionX(this.mapWidth * (newMapIndex + 1));
+      this.loadObjects(this.map00, newMapIndex + 1);
     }
+    this.removeObjects(newMapIndex - 1);
     this.mapIndex = newMapIndex;
 
     return true;
   },
 
-  update: function() {
+  update: function(dt) {
     var animationLayer = this.getParent().getChildByTag(TagOfLayer.Animation);
     var eyeX = animationLayer.getEyeX();
     this.checkAndReload(eyeX);
