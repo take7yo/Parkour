@@ -1,4 +1,4 @@
-cocos2d-js环境配置（ubuntu14.）
+cocos2d-js环境配置（ubuntu14.04）
 
 参考：https://github.com/cocos2d/cocos2d-js
 下载官网版压缩包：
