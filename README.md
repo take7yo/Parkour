@@ -38,5 +38,5 @@ For JSB build, there are some restrictions
 
 - [Android build] NDK version must be r9d
 - [iOS build] Xcode version must be 5.1.1 +
-- ubuntu14.04 32bit support
+- ubuntu14.04 32bit support  
     $ sudo apt-get install lib32stdc++6 lib32z1 lib32z1-de
