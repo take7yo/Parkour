@@ -17,6 +17,10 @@
         "src/BackgroundLayer.js",
         "src/PlayScene.js",
         "src/StatusLayer.js",
-        "src/globals.js"
+        "src/globals.js",
+        "src/Coin.js",
+        "src/Rock.js",
+        "src/GameOverLayer.js",
+        "src/SimpleRecognizer.js"
     ]
 }

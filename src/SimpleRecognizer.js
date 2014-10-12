@@ -3,17 +3,20 @@ function Point(x, y) {
   this.Y = y;
 }
 
+// class define
 function SimpleRecognizer() {
   this.points = [];
   this.result = '';
 }
 
+// be called in onTouchBegan
 SimpleRecognizer.prototype.beginPoint = function(x, y) {
   this.points = [];
   this.result = '';
   this.points.push(new Point(x, y));
 }
 
+// be called in onTouchMoved
 SimpleRecognizer.prototype.movePoint = function(x, y) {
   this.points.push(new Point(x, y));
 
