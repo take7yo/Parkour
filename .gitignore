@@ -1,3 +1,10 @@
+.cocos-project.json
+CMakeLists.txt
+frameworks/
+publish/
+runtime/
+tools/
+
 # Compiled Object files
 *.slo
 *.lo
